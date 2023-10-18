@@ -66,7 +66,7 @@ export class AuthService {
 
   generateJwtToken(userId: string, email: string): Promise<string> {
     const payload = {
-      sub: userId,
+      id: userId,
       email: email,
     };
 
