@@ -3,8 +3,7 @@ import { AppModule } from './../src/app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../src/prisma/service/prisma.service';
 import * as pactum from 'pactum';
-import passport from 'passport';
-import { timeout } from 'rxjs';
+import { SignupDto } from 'src/auth/dto';
 
 describe('App e2e test', () => {
   let app: INestApplication;
@@ -19,8 +18,9 @@ describe('App e2e test', () => {
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
     await app.init();
-    await app.listen(6000);
+    await app.listen(5001);
 
+    pactum.request.setBaseUrl('http://localhost:5001/api');
     prisma = app.get(PrismaService);
 
     await prisma.cleanDatabase();
@@ -32,15 +32,19 @@ describe('App e2e test', () => {
 
   describe('Auth Module', () => {
     describe('Signup', () => {
-      it('should be return 201 when user is signed up', async () => {
+      it('should be return 201 when user is signed up', () => {
+        const dto: SignupDto = {
+          username: 'test',
+          name: 'test',
+          email: 'test@test.com',
+          password: 'password',
+        };
         return pactum
           .spec()
-          .post('http://localhost:6000/api/auth/signup')
-          .withBody({
-            username: 'test',
-            name: 'test',
-            email: 'test@test.com',
-            password: 'password',
+          .post('/auth/signup')
+          .withBody(dto)
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
           })
           .expectStatus(201);
       });
