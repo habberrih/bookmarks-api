@@ -26,7 +26,12 @@
     "db-test:remove": "docker compose rm test-postgres -s -f -v",
     "db-test:up": "docker compose up test-postgres -d",
     "db-test:prisma-deploy": "dotenv -e .env.test -- npx prisma migrate deploy",
-    "db-test:restart": "npm run db-test:remove && npm run db-test:up && sleep 1 && npm run db-test:prisma-deploy"
+    "db-test:restart": "npm run db-test:remove && npm run db-test:up && sleep 1 && npm run db-test:prisma-deploy",
+    "prisma": "prisma",
+    "prisma:reset": "npm run prisma migrate reset"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
