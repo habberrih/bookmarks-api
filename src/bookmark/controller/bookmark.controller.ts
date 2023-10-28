@@ -12,8 +12,10 @@ import { BookmarkService } from '../service/bookmark.service';
 import { CreateBookmarkDto, UpdateBookmarkDto } from '../dto';
 import { GetCurrentUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @UseGuards(JwtGuard)
+@ApiTags('Bookmarks')
 @Controller('bookmarks')
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
