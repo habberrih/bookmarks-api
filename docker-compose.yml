@@ -9,6 +9,7 @@ services:
       - postgres-db:/data/postgres
     env_file:
       - .env
+    restart: unless-stopped
 
   test-postgres:
     image: postgres:15.2-alpine
